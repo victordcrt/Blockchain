@@ -15,8 +15,8 @@ class Block:
         return hashlib.sha256(block_string.encode()).hexdigest()
 
 class Blockchain:
-    difficulty = 2
-
+    difficulty = 1
+    
     def __init__(self):
         self.chain = [self.create_genesis_block()]
 
