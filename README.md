@@ -16,5 +16,6 @@ Ce projet implémente une blockchain de base avec les fonctionnalités suivantes
 - `main.py` : Point d'entrée pour tester.
 
 ## Utilisation
+Vous pouvez également tester via un navigateur ou alors Postman et ainsi envoyer directement des requêtes POST avec un corps JSON. (En cours de finalisation).
 ```bash
 python main.py
