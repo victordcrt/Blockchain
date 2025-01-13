@@ -1,9 +1,9 @@
 # Simple Blockchain
 
 Ce projet implémente une blockchain de base avec les fonctionnalités suivantes :
-- Création de blocs avec un système de preuve de travail (PoW)
+- Création de blocs avec un système de proof of work
 - Validation de la chaîne de blocs
-- Fonctionnalités de minage
+- Fonctionnalités de minage (à venir)
 
 ## Installation
 1. Clonez ce dépôt.
