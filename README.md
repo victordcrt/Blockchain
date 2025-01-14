@@ -3,7 +3,7 @@
 Ce projet implémente une blockchain de base avec les fonctionnalités suivantes :
 - Création de blocs avec un système de proof of work
 - Validation de la chaîne de blocs
-- Fonctionnalités de minage (à venir)
+- Fonctionnalités de minage
 
 ## Installation
 1. Clonez ce dépôt.
@@ -16,6 +16,9 @@ Ce projet implémente une blockchain de base avec les fonctionnalités suivantes
 - `main.py` : Point d'entrée pour tester.
 
 ## Utilisation
-Vous pouvez également tester via un navigateur ou alors Postman et ainsi envoyer directement des requêtes POST sur /mine avec un corps JSON. (En cours de finalisation).
+Vous pouvez également tester via un navigateur ou alors Postman.
+Envoyez une requête GET à /chain pour obtenir l'état actuel de la chaîne. Ou alors une requête POST à /mine avec le coprs JSON suivant pour de miner de nouveaux blocs.
 ```bash
-python main.py
+{
+    "data": "New block data"
+}
