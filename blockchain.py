@@ -53,4 +53,17 @@ class Blockchain:
             if current_block.timestamp <= previous_block.timestamp:
                 return f"Block {current_block.index} has an invalid timestamp"
         return "Blockchain is valid"
+
+    def get_block_by_index(self, index):
+        if 0 <= index < len(self.chain):
+            return self.chain[index]
+        return None
     
+    def get_block_by_hash(self, hash_value):
+        for block in self.chain:
+            if block.hash == hash_value:
+                return block
+        return None
+    
+    def list_all_hashes(self):
+        return [block.hash for block in self.chain]
