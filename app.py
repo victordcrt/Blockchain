@@ -13,27 +13,42 @@ def get_chain():
 def mine_block():
     data = request.get_json().get("data", "Empty Data")
     blockchain.add_block(data)
-    return jsonify({"message": "Block mined!", "chain": [{"index": block.index, "hash": block.hash} for block in blockchain.chain]})
-
-if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    return jsonify({
+        "message": "Block mined!", 
+        "chain": [{"index": block.index, "hash": block.hash} for block in blockchain.chain]
+    })
 
 @app.route('/block/<int:index>', methods=['GET'])
 def get_block_by_index(index):
     block = blockchain.get_block_by_index(index)
     if block:
-        return jsonify({"index": block.index, "previous_hash": block.previous_hash, "timestamp": block.timestamp, "data": block.data, "nonce": block.nonce, "hash": block.hash}), 200 # 200 make me cry...
+        return jsonify({
+            "index": block.index,
+            "previous_hash": block.previous_hash,
+            "timestamp": block.timestamp,
+            "data": block.data,
+            "nonce": block.nonce,
+            "hash": block.hash
+        }), 200
     return jsonify({"error": "Block not found"}), 404
  
-@app.route('/block/hash/<string:hash>', methods=['GET'])
+@app.route('/block/hash/<string:hash_value>', methods=['GET'])
 def get_block_by_hash(hash_value):
     block = blockchain.get_block_by_hash(hash_value)
     if block:
-        return jsonify({"index": block.index, "previous_hash": block.previous_hash, "timestamp": block.timestamp, "data": block.data, "nonce": block.nonce, "hash": block.hash}), 200
+        return jsonify({
+            "index": block.index,
+            "previous_hash": block.previous_hash,
+            "timestamp": block.timestamp,
+            "data": block.data,
+            "nonce": block.nonce,
+            "hash": block.hash
+        }), 200
     return jsonify({"error": "Block not found"}), 404
  
 @app.route('/hashes', methods=['GET'])
 def list_all_hashes():
+    hashes = blockchain.list_all_hashes()
     return jsonify({"hashes": hashes}), 200
 
 if __name__ == '__main__':
