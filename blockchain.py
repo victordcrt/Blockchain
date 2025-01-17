@@ -1,17 +1,30 @@
 import hashlib
 import time
 
+class Transaction:
+    def __init__(self, sender, recipient, amount):
+        self.sender = sender
+        self.recipient = recipient
+        self.amount = amount
+
+    def to_dict(self):
+        return {
+            "sender": self.sender,
+            "recipient": self.recipient,
+            "amount": self.amount
+        }
+
 class Block:
-    def __init__(self, index, previous_hash, timestamp, data, nonce=0):
+    def __init__(self, index, previous_hash, timestamp, transactions, nonce=0):
         self.index = index
         self.previous_hash = previous_hash
         self.timestamp = timestamp
-        self.data = data
+        self.transactions = transactions
         self.nonce = nonce
         self.hash = self.compute_hash()
 
     def compute_hash(self):
-        block_string = f"{self.index}{self.previous_hash}{self.timestamp}{self.data}{self.nonce}"
+        block_string = f"{self.index}{self.previous_hash}{self.timestamp}{[tx.to_dict() for tx in self.transactions]}{self.nonce}"
         return hashlib.sha256(block_string.encode()).hexdigest()
 
 class Blockchain:
@@ -19,19 +32,34 @@ class Blockchain:
     
     def __init__(self):
         self.chain = [self.create_genesis_block()]
+        self.current_transactions = []
 
     def create_genesis_block(self):
-        return Block(0, "0", time.time(), "Genesis Block")
+        return Block(0, "0", time.time(), [], 0)
 
     def get_latest_block(self):
         return self.chain[-1]
-
-    def add_block(self, data):
-        previous_block = self.get_latest_block()
-        new_block = Block(len(self.chain), previous_block.hash, time.time(), data)
-        new_block = self.proof_of_work(new_block)
-        self.chain.append(new_block)
-
+    
+    def new_transaction(self, sender, recipient, amount):
+        transaction = Transaction(sender, recipient, amount)
+        self.current_transactions.append(transaction)
+        return transaction
+    
+    def mine_pending_transactions(self):
+        if not self.current_transactions:
+            return "No transactions to mine"
+        
+        new_block = Block(
+            len(self.chain),
+            self.get_latest_block().hash,
+            time.time(),
+            self.current_transactions
+        )
+        mined_block = self.proof_of_work(new_block)
+        self.chain.append(mined_block)
+        self.current_transactions = []
+        return mined_block
+    
     def proof_of_work(self, block):
         block.nonce = 0
         while not block.hash.startswith("0" * Blockchain.difficulty):
